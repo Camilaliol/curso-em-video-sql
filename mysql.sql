@@ -1,3 +1,10 @@
+para abrir o terminal faÇa:
+
+mysql -u root -p
+
+
+
+
 1. CREATE DATABASE CASDASTRO;
 2. USE CADASTR;
 
