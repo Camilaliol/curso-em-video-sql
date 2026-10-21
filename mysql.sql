@@ -1,5 +1,11 @@
+cd c:\xampp\mysql\bin      necessário para abrir o terminal
+ 
+c:\xampp\mysql\bin>mysql -u root -p
+
+
+
 1. CREATE DATABASE CASDASTRO;
-2. USE CADASTR;
+2. USE CADASTRo;
 
 3. CRIANDO O QUE TEM NA TABELA 
 
