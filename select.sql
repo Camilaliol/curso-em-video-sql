@@ -6,7 +6,7 @@ mysql -u root -p
 1. status 
     VERIFICA EM QUAL BANCO DE DADOS ESTAMOS.
 
-2. UPDATE CURSOS SET NOME = 'PH' WHERE ID_CURSO = 4; 
+2. UPDATE CURSOS SET NOME = 'PH' WHERE ID_CURSO = 4; -- altera o nome do curso
 
  UPDATE GAFANHOTOS  SET PESO = '83.20' WHERE ID = 4;
 
@@ -89,4 +89,58 @@ PARA SELECIONAR AS LINHAS
     SELECT ANO,CARGA FROM CURSOS
     WHERE ANO = '2016'
     ORDER BY NOME;
-           
+
+
+20. --SELECIONA TABELAS ESPECIFICAR
+--!= DIFERENTE / <> DIFERENTE
+SELECT NOME,DESCRICAO,ano FROM CURSOS
+    WHERE ANO != '2015' 
+    order BY NOME;
+
+21. BETWEEN
+-- O BETWEEN SIGNIFICA ENTRE USADO COMO COMPARADORES
+b--etween especifica faixa de valores
+ SELECT NOME,ANO FROM CURSOS
+    WHERE ANO BETWEEN 2014 AND 2016 
+    ORDER BY ANO DESC NOME;   
+
+22. IN
+-- com o IN comoca-se valores especificos
+ SELECT IDCURSO, NOME FROM CURSOS
+ WHERE ANO IN ('2014','2016','2018')   
+ ORDER BY NOME;
+
+ 23. SELECT NOME,DESCRICAO,ANO FROM CURSOS
+ WHERE ANO IN ('2014','2015')
+ ORDER BY ANO;
+ +------------+--------------------------------+------+
+| NOME       | DESCRICAO                      | ANO  |
++------------+--------------------------------+------+
+| HTML5      | Curso de HTML5                 | 2014 |
+| Algoritmos | Lógica de Programação          | 2014 |
+| Photoshop5 | Dicas de Photoshop CC          | 2014 |
+| PHP        | Curso de PHP para iniciantes   | 2015 |
+| Java       | Introdução à Linguagem Java    | 2015 |
++------------+--------------------------------+------+
+
+ 24. > MAIOR OU <
+
+SELECT NOME, CARGA, TOTAULAS FROM CURSOS
+    WHERE CARGA >35 AND TOTAULAS <30;
+
+ +---------+-------+----------+
+| NOME    | CARGA | TOTAULAS |
++---------+-------+----------+
+| PHP     |    40 |       20 |
+| Java    |    40 |       29 |
+| Python  |    40 |       18 |
+| C++     |    40 |       25 |
+| Redes   |    40 |       15 |
+| Magento |    50 |       25 |
+| PHP7    |    40 |       20 |
++---------+-------+----------+
+
+SELECT NOME,CARGA,TOTAULAS FROM CURSOS
+WHERE CARGA > 35 OR TOTAULAS < 30;
+
+
