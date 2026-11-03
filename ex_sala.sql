@@ -16,7 +16,7 @@ ON E.EMCOMENDAPRODUTOID = P.PRODUTOID
 
 Total dos vencimentos dos vendedores com comissões entre 0.13 e 0.15;
 
-2.0CREATE VIEW V_TOTAL AS
+2.CREATE VIEW V_TOTAL AS
 select sum(vencimento) as total_vencimento
 from tab_vendedor
 where comissao between 0.13 and 0.15;
@@ -149,3 +149,18 @@ ON V.CODCIDADE = C.COD_CIDADE;
 SELECT *FROM  V_TUDO;
 
 a. da alínea 2d. que, possibilite visualizar os vendedores, ordenado por nome de  vendedor e respetiva cidade;  
+
+CREATE VIEW V_VMAIOR AS
+SELECT V.NOME, C.NOME_CIDADE AS CIDADE,
+    V.VENCIMENTO, V.COMISSAO,
+    MAX(VENCIMENTO +(VENCIMENTO * COMISSAO)) AS VALOR_A_RECEBER
+FROM TAB_VENDEDOR V
+INNER JOIN TAB_CIDADE C
+ON V.CODCIDADE = C.COD_CIDADE;   
+
++---------------+--------+------------+----------+-----------------+
+| NOME          | CIDADE | VENCIMENTO | COMISSAO | VALOR_A_RECEBER |
++---------------+--------+------------+----------+-----------------+
+| Andreia Silva | Lisboa |       1000 |     0.15 |         1482.00 |
++---------------+--------+------------+----------+-----------------+
+SELECT * FROM V_VMAIOR;
