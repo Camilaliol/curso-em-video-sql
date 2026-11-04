@@ -102,7 +102,7 @@ a. Mostrar todos os movimentos (notas lançadas)
 b. Mostrar todos os movimentos, incluindo nome do aluno, professor e curso;
 
 
-CREATE VIEW V_MOVE_TOTAL;
+CREATE VIEW V_MOVE_TOTAL AS
 SELECT M.COD_MOV, M.DATA_INICIO,M.DATA_FIM, M.COD_ALUNO, M.COD_PROFESSOR,M.COD_CURSO, M.NOTA_FINAL, 
 A.NOME AS 'ALUNO',
 P.NOME AS 'PROFESSOR',
@@ -116,12 +116,103 @@ INNER JOIN TAB_CURSOS C
 ON M.COD_CURSO = C.COD_CURSO;
 
 
-
+| COD_MOV | DATA_INICIO | DATA_FIM   | COD_ALUNO | COD_PROFESSOR | COD_CURSO | NOTA_FINAL | ALUNO           | PROFESSOR     | CURSOS |
++---------+-------------+------------+-----------+---------------+-----------+------------+-----------------+---------------+--------+
+|       1 | 2019-01-10  | 2019-01-11 |         2 |             2 |         2 |      13.00 | RÚBEN MALAGUETA | LUIS ALVES    | WORD   |
+|       4 | 2019-02-10  | 2019-02-12 |         2 |             2 |         2 |      17.00 | RÚBEN MALAGUETA | LUIS ALVES    | WORD   |
+|       2 | 2019-01-01  | 2019-01-02 |         3 |             3 |         3 |      14.00 | HELENA TRÓIA    | CARLOS MANUEL | EXCEL  |
+|       5 | 2019-02-01  | 2019-02-04 |         3 |             3 |         3 |      18.00 | HELENA TRÓIA    | CARLOS MANUEL | EXCEL  |
+|       3 | 2019-01-10  | 2019-01-12 |         4 |             4 |         4 |       8.00 | RUI DUNAS       | SANDRA NUNES  | HTML   |
+|       6 | 2019-02-10  | 2019-02-12 |         4 |             4 |         4 |       7.00 | RUI DUNAS       | SANDRA NUNES  | HTML   |
++---------+-------------+------------+-----------+---------------+-----------+------------+-----------------+---------------+--------+
 
 c. Acrescente à consulta anterior o preço do curso;
+
+CREATE VIEW V_MOVE_TOTAL_PRECO AS
+SELECT M.COD_MOV, M.DATA_INICIO,M.DATA_FIM, M.COD_ALUNO, M.COD_PROFESSOR,M.COD_CURSO, M.NOTA_FINAL, 
+A.NOME AS 'ALUNO',
+P.NOME AS 'PROFESSOR',
+C.CURSO AS 'CURSOS', -- ADD OS AS PARA COLOCAR UM NOVO NOME NA COLUNA MOSTRADA
+C.PRECO_CURSO AS 'PREÇO' -- ADICIONANDO UMA NOVA COLUNA
+FROM TAB_MOVIMENTOS M
+INNER JOIN TAB_ALUNOS A
+ON M.COD_ALUNO = A.COD_ALUNO
+INNER JOIN TAB_PROFESSORES P
+ON M.COD_PROFESSOR = P.COD_PROFESSOR
+INNER JOIN TAB_CURSOS C
+ON M.COD_CURSO = C.COD_CURSO;
+
++---------+-------------+------------+-----------+---------------+-----------+------------+-----------------+---------------+--------+--------+
+| COD_MOV | DATA_INICIO | DATA_FIM   | COD_ALUNO | COD_PROFESSOR | COD_CURSO | NOTA_FINAL | ALUNO           | PROFESSOR     | CURSOS | PREÇO  |
++---------+-------------+------------+-----------+---------------+-----------+------------+-----------------+---------------+--------+--------+
+|       1 | 2019-01-10  | 2019-01-11 |         2 |             2 |         2 |      13.00 | RÚBEN MALAGUETA | LUIS ALVES    | WORD   | 135.00 |
+|       4 | 2019-02-10  | 2019-02-12 |         2 |             2 |         2 |      17.00 | RÚBEN MALAGUETA | LUIS ALVES    | WORD   | 135.00 |
+|       2 | 2019-01-01  | 2019-01-02 |         3 |             3 |         3 |      14.00 | HELENA TRÓIA    | CARLOS MANUEL | EXCEL  | 140.00 |
+|       5 | 2019-02-01  | 2019-02-04 |         3 |             3 |         3 |      18.00 | HELENA TRÓIA    | CARLOS MANUEL | EXCEL  | 140.00 |
+|       3 | 2019-01-10  | 2019-01-12 |         4 |             4 |         4 |       8.00 | RUI DUNAS       | SANDRA NUNES  | HTML   | 160.00 |
+|       6 | 2019-02-10  | 2019-02-12 |         4 |             4 |         4 |       7.00 | RUI DUNAS       | SANDRA NUNES  | HTML   | 160.00 |
++---------+-------------+------------+-----------+---------------+-----------+------------+-----------------+---------------+--------+--------+
+
+
 d. Mostrar o número de alunos por curso (incluindo o nome do curso);
+
+CREATE VIEW V_ALUNOS_POR_CURSO AS 
+SELECT C.CURSO AS 'NOME DO CURSO',
+    COUNT(M.COD_ALUNO) AS 'NUMERO DE ALUNOS'
+FROM TAB_MOVIMENTOS M  
+INNER JOIN TAB_CURSOS C
+ON M.COD_CURSO = C.COD_CURSO
+GROUP BY C.CURSO
+;   
+
++---------------+------------------+
+| NOME DO CURSO | NUMERO DE ALUNOS |
++---------------+------------------+
+| EXCEL         |                2 |
+| HTML          |                2 |
+| WORD          |                2 |
++---------------+------------------+
+
 e. Mostrar o valor recebido por cada curso (soma dos valores de cada curso * no de
 alunos);
+
+        CREATE VIEW V_VALOR_CURSO AS
+        SELECT  C.CURSO AS 'NOME DO CURSO',
+        COUNT(M.COD_ALUNO) AS 'Nº DE ALUNOS',
+        C. PRECO_CURSO AS 'PREÇO UNITARIO',
+        SUM(C.PRECO_CURSO) AS 'VALOR TOTAL RECEBIDO POR CURSO'
+        FROM TAB_MOVIMENTOS M
+        INNER JOIN TAB_CURSOS C
+        ON M.COD_CURSO = C.COD_CURSO 
+        GROUP BY C.CURSO;
+        
+ +---------------+--------------+----------------+--------------------------------+
+| NOME DO CURSO | Nº DE ALUNOS | PREÇO UNITARIO | VALOR TOTAL RECEBIDO POR CURSO |
++---------------+--------------+----------------+--------------------------------+
+| EXCEL         |            2 |         140.00 |                         280.00 |
+| HTML          |            2 |         160.00 |                         320.00 |
+| WORD          |            2 |         135.00 |                         270.00 |
++---------------+--------------+----------------+--------------------------------+
+
 f. Alterar a vista anterior para mostrar a média do valor recebido por curso,
 apresentada com 2 casas decimais (usar a função round(valor, casas decimais))
 para obter essa apresentação.
+
+ CREATE OR REPLACE VIEW V_VALOR_CURSO AS
+        SELECT  C.CURSO AS 'NOME DO CURSO',
+        COUNT(M.COD_ALUNO) AS 'Nº DE ALUNOS',
+        C. PRECO_CURSO AS 'PREÇO UNITARIO',
+        ROUND(AVG(C.PRECO_CURSO), 2) AS 'MÉDIA DO VALOR RECEBIDO POR CURSO'
+        FROM TAB_MOVIMENTOS M
+        INNER JOIN TAB_CURSOS C
+        ON M.COD_CURSO = C.COD_CURSO 
+        GROUP BY C.CURSO;
+    
+
++---------------+--------------+----------------+--------------------------------+
+| NOME DO CURSO | Nº DE ALUNOS | PREÇO UNITARIO | VALOR TOTAL RECEBIDO POR CURSO |
++---------------+--------------+----------------+--------------------------------+
+| EXCEL         |            2 |         140.00 |                         140.00 |
+| HTML          |            2 |         160.00 |                         160.00 |
+| WORD          |            2 |         135.00 |                         135.00 |
++---------------+--------------+----------------+--------------------------------+
