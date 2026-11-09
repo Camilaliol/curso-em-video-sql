@@ -1,6 +1,6 @@
 para abrir o terminal faÇa:
 
-mysql -u root -p
+E CURSOS
 
 
 
