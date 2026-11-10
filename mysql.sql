@@ -5,7 +5,7 @@ c:\xampp\mysql\bin>mysql -u root -p
 =======
 para abrir o terminal faÇa:
 
-mysql -u root -p
+E CURSOS
 
 >>>>>>> 3c7460c7f96e4c4fe5e728eb5dcae23f38a839c1
 
